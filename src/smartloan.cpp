@@ -58,6 +58,7 @@ CONTRACT smartloan : public contract {
  //A portion of what was sent to the contract can be used to crete security for the loan. 
  
       ACTION secureloan(name owner,asset quantity) {
+        
       require_auth( owner );
       check_coin_balance(owner,quantity);
       reduce_coin_balance(owner,quantity);
