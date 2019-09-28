@@ -18,7 +18,6 @@ CONTRACT smartloan : public contract {
      ACTION initiateloan(name owner,std::string stcurrency, int days) {
     //  require_auth( owner );
     check(stcurrency=="DIVCOIN", "Only DIVCOIN is accepted at the momment");
-     
       loanstructb_index smartloan(get_first_receiver(), get_first_receiver().value);
       smartloan.emplace(owner, [&]( auto& row ) {
        row.id = smartloan.available_primary_key (); 
@@ -45,9 +44,7 @@ CONTRACT smartloan : public contract {
     //with scope of from to get your balane
     loandetails_index loandetails(get_self(),from.value);
     auto iterator = loandetails.find(currency_symbol.raw());
- 
- 
- //Save the quantity sent to our contract
+    //Save the quantity sent to our contract
       loandetails.emplace(get_self(),[&](auto &row){
         row.funds = quantity;
         //Send owner, X valueof loan.
@@ -57,6 +54,23 @@ CONTRACT smartloan : public contract {
  
   }
  
+ //Step 3 : Secure the loan.
+ //A portion of what was sent to the contract can be used to crete security for the loan. 
+ 
+      ACTION secureloan(name owner,asset quantity) {
+      require_auth( owner );
+      check_coin_balance(owner,quantity);
+      reduce_coin_balance(owner,quantity);
+     // check(stcurrency=="DIVCOIN", "Only DIVCOIN is accepted at the momment");
+      loansecure_index secureloan(get_first_receiver(), get_first_receiver().value);
+      secureloan.emplace(get_self(), [&]( auto& row ) {
+      row.id = secureloan.available_primary_key (); 
+      row.funds = quantity;
+ 
+      });
+    }
+    
+    
  
   private:
    const symbol currency_symbol;
@@ -65,6 +79,9 @@ CONTRACT smartloan : public contract {
       name key;
       std::string name;
     };
+    
+    //Holds value of what was sent to the Smart Contract.
+    //cleos get table inline bob loandetails- Shows what bob has sent
     TABLE loandetails{
      // int id;
       asset funds;
@@ -74,6 +91,8 @@ CONTRACT smartloan : public contract {
     
     //Send #days needed for loan.
     //Along with currency of loan
+    //cleos get table inline inline loanstructb
+    //Shows all loans. 
     TABLE loanstructb{
       int id;
       name owner;
@@ -86,9 +105,43 @@ CONTRACT smartloan : public contract {
      uint64_t primary_key() const { return id; }
     };
     
+    //Table for Step 3:
+    //Loan Security Table
+    //Value individuals have sent as security for a loan.
+        TABLE loansecure{
+      int id;
+      asset funds;
+     //Primary key
+    uint64_t primary_key() const { return id; }
+    // uint64_t primary_key() const {return funds.symbol.raw();}
+    };
+    
+    
     typedef eosio::multi_index<"table"_n, tableStruct> table;
     typedef eosio::multi_index<"loanstructb"_n,loanstructb>loanstructb_index;
     typedef eosio::multi_index<"loandetails"_n,loandetails>loandetails_index;
+    typedef eosio::multi_index<"loansecure"_n,loansecure>loansecure_index;
+    
+    
+    void check_coin_balance(name owner,asset quantity){
+      loandetails_index loandetails(get_self(),owner.value);
+      auto row = loandetails.get(quantity.symbol.raw(),"No balance");
+      check(row.funds.amount >=quantity.amount,"Not enough coins");
+      
+      
+    }
+        void reduce_coin_balance(name owner,asset quantity){
+      loandetails_index loandetails(get_self(),owner.value);
+      auto iterator = loandetails.find(quantity.symbol.raw());
+      if (iterator != loandetails.end()){
+        loandetails.modify(iterator,get_self(),[&](auto &row){
+          row.funds.set_amount(row.funds.amount-quantity.amount);
+        });
+      }
+      
+      
+    }
+    
 };
 
  

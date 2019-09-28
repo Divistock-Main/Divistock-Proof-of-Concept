@@ -32,6 +32,20 @@
             ]
         },
         {
+            "name": "loansecure",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "int32"
+                },
+                {
+                    "name": "funds",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
             "name": "loanstructb",
             "base": "",
             "fields": [
@@ -50,6 +64,20 @@
                 {
                     "name": "days",
                     "type": "int32"
+                }
+            ]
+        },
+        {
+            "name": "secureloan",
+            "base": "",
+            "fields": [
+                {
+                    "name": "owner",
+                    "type": "name"
+                },
+                {
+                    "name": "quantity",
+                    "type": "asset"
                 }
             ]
         },
@@ -73,12 +101,24 @@
             "name": "initiateloan",
             "type": "initiateloan",
             "ricardian_contract": ""
+        },
+        {
+            "name": "secureloan",
+            "type": "secureloan",
+            "ricardian_contract": ""
         }
     ],
     "tables": [
         {
             "name": "loandetails",
             "type": "loandetails",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "loansecure",
+            "type": "loansecure",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
