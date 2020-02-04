@@ -1,13 +1,9 @@
-/**
- * simple decentralized exchange
- * smart contract on eos
- *
- */
-
 #include "exchange.hpp"
 #include <eosiolib/currency.hpp>
 
 using namespace eosio;
+
+// create confirmation to trade request from owner
 
 void exchange::add_order(uint64_t scope, account_name maker, asset quantity, uint64_t price, account_name contract) {
     order_index orders(_self, scope);
@@ -36,7 +32,7 @@ void exchange::cancelorder(account_name scope, uint64_t order_id) {
 void exchange::deposit(account_name contract, account_name user, asset quantity) {
     print(name{user}, " deposit ", quantity, "\n");
     if (quantity.amount == 0) {
-        print("amoutn equals to 0 abord\n");
+        print("amount equals to 0 abord\n");
         return;
     }
     action(
@@ -53,17 +49,18 @@ void exchange::transfer(account_name contract, account_name from, account_name t
             contract, N(transfer),
             std::make_tuple(from, to, quantity, std::string("transfer"))
     ).send();
+    
 }
 
 
 void exchange::withdraw(account_name contract, account_name user, asset quantity) {
     print(name{user}, " withdraw ", quantity, "\n");
     if (quantity.amount <= 0) {
-        print("amoutn equals to 0 abord\n");
+        print("amount equals to 0 abord\n");
         return;
     }
-//    eosio_assert( quantity.amount > 0, "insufficient bid" );
-    action act(
+
+    action act (
             permission_level{_self, N(active)},
             contract, N(transfer),
             std::make_tuple(_self, user, quantity, std::string("withdraw"))
@@ -73,7 +70,7 @@ void exchange::withdraw(account_name contract, account_name user, asset quantity
 
 asset exchange::to_settlement_token(asset quantity, uint64_t price, bool floor) {
     eosio_assert(quantity.amount >=0 , "insufficient amount");
-    //this is a simple logic, need to add more rules
+    
     uint64_t amt = quantity.amount * price;
 
     int64_t p = (int64_t) quantity.symbol.precision();
@@ -156,8 +153,8 @@ void exchange::bid(account_name maker, asset quantity, uint64_t price, asset bid
     auto left = quantity;
     asset maker_receive(0, bid_currency.symbol);
 
-//    require_auth(maker);
-//    require_recipient(maker);
+    require_auth(maker);
+    require_recipient(maker);
 
     while (left.amount > 0 && ask_it != ask_end) {
         print("ask order id: ", ask_it->id, " price: ", ask_it->price, "\n");
