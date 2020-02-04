@@ -1,8 +1,11 @@
-# Divistock-Proof-of-Concept
+# Divistock contracts
 
-Proof of Concept or MVP for the Divistock startup.
+Exchange
+The trader contract will be a multi method contract which would invoke the buying, selling and ttrading of Divistock coins within the platform amongst our asset owners.
 
-We aim to build the ultimate platform for the tokenization of many kinds of assets, providing not only how, but why as well.
+Legally binding smart contracts /smart agreements
+Smart contracts will be binding to the contractual agreements of the owner of Assets & Divistock.  This proposed agreement would be generated at the end of the tokenization process once the preliminary measures between the owner and Divistock are satisfied.
 
-Why build on EOSIO Blockchain? EOSIO is a high speed infrastructure that allows us to build this blockchain application which is scalable in the sense that we can quickly acquire lots of users because it is free for them to use.
+Tokenization
+Converting real life assets into digital currency
 
