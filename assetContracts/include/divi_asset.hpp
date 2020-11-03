@@ -1,33 +1,24 @@
-/* A simple standard for digital assets (ie. Fungible and Non-Fungible Tokens - NFTs) for EOSIO blockchains
- */
+   /* A standard DiviStock contract for the tokenization of assets(ie. Fungible and Non-Fungible and NFTs) 
+   */
+
+#pragma once
 
 #include <eosio/eosio.hpp>
 #include <eosio/asset.hpp>
 #include <eosio/singleton.hpp>
 #include <eosio/transaction.hpp>
+//#include <eosio.SimpleAsset.io>  a (eosio contract) standard for managing digital assets
+
+#include <string>
 
 using namespace eosio;
-using std::string;
+{
 
-CONTRACT asset2tokenz : public contract{
-	public:
-		using contract::contract;
-		
-   class [[eosio::contract("eosio.token")]] token : public contract {
+   class [[eosio::contract("eosio.token")]] token : public contract 
+   {
       public:
          using contract::contract;
-
-         /**
-          * Allows `issuer` account to create a token in supply of `maximum_supply`. If validation is successful a new entry in statstable for token symbol scope gets created.
-          *
-          * @param issuer - the account that creates the token,
-          * @param maximum_supply - the maximum supply set for the token created.
-          *
-          * @pre Token symbol has to be valid,
-          * @pre Token symbol must not be already created,
-          * @pre maximum_supply has to be smaller than the maximum supply allowed by the system: 1^62 - 1.
-          * @pre Maximum supply must be positive;
-          */
+                 
          [[eosio::action]]
          void create( const name&   issuer,
                       const asset&  maximum_supply);
@@ -67,14 +58,10 @@ CONTRACT asset2tokenz : public contract{
                         const string&  memo );
          /**
           * Allows `ram_payer` to create an account `owner` with zero balance for
-          * token `symbol` at the expense of `ram_payer`.
-          *
+          * token `symbol` at the expense of `ram_payer`.          
           * @param owner - the account to be created,
           * @param symbol - the token to be payed with by `ram_payer`,
           * @param ram_payer - the account that supports the cost of this action.
-          *
-          * More information can be read [here](https://github.com/EOSIO/eosio.contracts/issues/62)
-          * and [here](https://github.com/EOSIO/eosio.contracts/issues/61).
           */
          [[eosio::action]]
          void open( const name& owner, const symbol& symbol, const name& ram_payer );
@@ -134,11 +121,5 @@ CONTRACT asset2tokenz : public contract{
          void add_balance( const name& owner, const asset& value, const name& ram_payer );
    };
 
-}etst deployment.
-		* @return no return value.
-		*/
-		ACTION updatever( string version );
-		using updatever_action = action_wrapper< "updatever"_n, &asset2tokenz::updatever >;
-
-
+}
 

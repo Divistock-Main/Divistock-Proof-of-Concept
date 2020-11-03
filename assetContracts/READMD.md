@@ -1,4 +1,4 @@
-# asset2tokenz
+# divi_asset implementing SimpleAsset contract to manage and update assets and authors information
 
 This contract is to allow users to tokenize assets for Non-Fungible Tokens(NFT),
 Fungible Tokens(FT),and Non-Transferable Tokens(NTTs). User can request and receive validations of their assets,receive tokens with relative parameters and request confirmations, including
