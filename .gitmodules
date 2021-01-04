@@ -1,0 +1,3 @@
+[submodule "Contracts/Divicontracts/Contracts"]
+	path = Contracts/Divicontracts/Contracts
+	url = https://github.com/Divistock-Main/Divistock-Proof-of-Concept.git
