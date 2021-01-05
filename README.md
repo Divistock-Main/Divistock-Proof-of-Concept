@@ -1,7 +1,7 @@
 # Divistock-Proof-of-Concept
 Proof of Concept or MVP for the Divistock startup.
 
-![DiviStock](divistock logo.jpg)
+![divistock logo](divistock logo.jpg)
 
 Divistock aims to connect the business world by developing a decentralized blockchain that will
 allow for anyone or entity; such as companies, individuals, organizations, etc.; to create a
