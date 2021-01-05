@@ -1,4 +1,4 @@
-# divi_exchange
+# divexchange
 
 This contract is to demonstrate a basic DiviStock exchange contract which allows users to trade Divicoin between any pair of * standard currency types
 
